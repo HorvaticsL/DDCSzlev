@@ -1,0 +1,48 @@
+preAlpha - kezdés: 2022.05.31
+
+2022.05.31
+INI fájl (config) létrehozása (ver 01)
+    EXE fájl adatok: fájlnév, verzió, dátuma
+    
+    Export (forrás) EXCEL fájl adatok: fájlnév, mappa, munkalap
+    
+    Helységnév EXCEL fájl adatok: fájlnév, mappa, munkalap
+
+    Ártáblák mappa 
+    Ártábla BERE-BELF
+    Ártábla VAC-BELF
+    Ártábla VAC-SK-ÖML
+    Ártábla VAC-SK-PAL
+
+    Munkalap BERE-ÖML
+    Munkalap BERE-ÖML-Hosszú
+    Munkalap BERE-PAL
+    Munkalap BERE-Kemencepor
+
+    Munkalap VAC-ÖML
+    Munkalap VAC-ÖML-Hosszú
+    Munkalap VAC-PAL
+    Munkalap VAC-Kemencepor
+    
+    Munkalap VAC-SK-ÖML
+    Munkalap VAC-SK-PAL
+
+main.py
+
+2022.06.13
+A GIT verzió követés elkezdése, beállítása
+A hiba naplózás (naplozas.py) beállítása
+
+2022.06.15
+Hiba naplozás (log) véglegesítése: módosítás
+Excel fájlfeldolgozás
+    INI adatok beolvasása változókba
+    Excel fájl megnyitása
+    INI fájl módosítása
+        az eredeti mintafájl hibás volt, ezért újat készítettem
+        az automatikus e-mail fájlokat nem lehet feldolgozni
+        mivel formátumhibás!!!!!
+    A1 mező adat megjelenítése
+GIT-be olvasás
+preAlpha verzió lezárása
+

@@ -1,0 +1,109 @@
+****
+preAlpha - kezdés: 2022.05.31
+
+2022.05.31
+INI fájl (config) létrehozása (ver 01)
+    EXE fájl adatok: fájlnév, verzió, dátuma
+    
+    Export (forrás) EXCEL fájl adatok: fájlnév, mappa, munkalap
+    
+    Helységnév EXCEL fájl adatok: fájlnév, mappa, munkalap
+
+    Ártáblák mappa 
+    Ártábla BERE-BELF
+    Ártábla VAC-BELF
+    Ártábla VAC-SK-ÖML
+    Ártábla VAC-SK-PAL
+
+    Munkalap BERE-ÖML
+    Munkalap BERE-ÖML-Hosszú
+    Munkalap BERE-PAL
+    Munkalap BERE-Kemencepor
+
+    Munkalap VAC-ÖML
+    Munkalap VAC-ÖML-Hosszú
+    Munkalap VAC-PAL
+    Munkalap VAC-Kemencepor
+    
+    Munkalap VAC-SK-ÖML
+    Munkalap VAC-SK-PAL
+
+main.py
+
+2022.06.13
+A GIT verzió követés elkezdése, beállítása
+A hiba naplózás (naplozas.py) beállítása
+
+2022.06.15
+Hiba naplozás (log) véglegesítése: módosítás
+Excel fájlfeldolgozás
+    INI adatok beolvasása változókba
+    Excel fájl megnyitása
+    INI fájl módosítása
+        az eredeti mintafájl hibás volt, ezért újat készítettem
+        az automatikus e-mail fájlokat nem lehet feldolgozni
+        mivel formátumhibás!!!!!
+    A1 mező adat megjelenítése
+GIT-be olvasás
+preAlpha verzió lezárása
+****
+
+****
+Alpha - kezdés: 2022.06.15
+
+2022.06.15
+Virtuális környezet beállítása
+Munkakönyvtár beállítása: 
+    X:\Saját meghajtó\Programozás\Projekt\PythonVirtual\DDCSzlev_3x10\DDCSzlev>
+Mintafájl elkészítése (SAP-ból lehúzva a május havi adatok)
+Sorokszáma meghatározása, ellenőrzése
+Oszlopokszáma meghatározása, ellenőrzése
+Naplófájlba írása
+
+2022.06.16
+Fájlmentés másnéven, az eredeti fájl megmaradjon (dátum kerül a fájl végére)
+Oszlopfejléc átalakítása az adatbázis neveknek megfelelően
+Ciklus (for) készítése, ami végig járja a sorokat, oszlopkat
+    maxsor, maxoszlop használata
+    második sortól a maxsorig
+    első oszloptól a maxoszlopig
+    oszlopszám álakítása betűre (okar=get_column_letter(oszlop))
+    formátum: munkalap[oszlop + sor].value
+
+2022.07.04
+Soronként ellenőrzések elkezdése
+    ÖML-CPT-HU-ZF47 - feltétel esetén bruttó fuvardíjból kivonja az útdíjat
+    PAL-CPT-HU-ZF47 - feltétel esetén bruttó fuvardíjból kivonja az útdíjat
+    EXW esetén az útdíjat beállítja nullára
+    Helységnév beállítás helyének kialakítása, de az adatellenőrzés még nincs meg
+    Ha nem CPT és nem is EXW, akkor az útdíj mindig nullára
+
+2022.07.05
+verzió: alpha_0.02
+
+INI fájl átalakítása:
+    Helységnevek elérése az Excel fájl adatainak beírása
+    Útdíj adatokhoz a mappa, fájlnév és munkalap nevek megadása
+EXCEL fájl átalakítása:
+    oszlopokhoztartozó ciklus törlése
+    oszlop ellenőrzés törlése (okar)
+    oszlopváltozó törlése, minden hivatkozás fix oszlopazonosítóra történik
+    Incoterms vizsgálat javítása
+        EXW esetén nettofuvardíj=0, útdíj=0, fuvar+útdíj=0
+        ha ismeretlen az Icoterms (nem CPT és nem EXW) esetén nettofuvardíj=0, útdíj=0, fuvar+útdíj=alpha_0
+    sor hivatkozás egyeszerűsítése sr=str(sor)
+    
+2022.07.06
+verzió: alpha_0.02
+
+INI fájlban a helységneveket tartalmazó paraméter adatoknál a elérési útban
+    a "\" cseréje: "/"
+Helységnevek kikeresése, felülírása ciklussal
+    Képlet helyett az adatokat tartalmaz Excel fájl megnyitásával és soronkénti
+        ellenőrzésével megoldva.
+    Ha nincs adat a fájlban, azt type() változóval van ellenőrizve
+        type(változó) != NoneType
+
+
+
+
