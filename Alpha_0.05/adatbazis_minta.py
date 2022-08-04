@@ -15,6 +15,7 @@ cnxn = pyodbc.connect(
     "Encrypt=no"
 )
 
+
 cursor = cnxn.cursor()
 # cursor.execute("SELECT * FROM Szallitolevelek WHERE Incoterms='CPT'")
 

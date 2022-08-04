@@ -4,13 +4,18 @@ A fájlban lévő adatokat úgy kell átalakítani, hogy
 az adatbázisba lementhetők legyenek - helységnevek, fuvar-, útdíjak, stb.
 Készült: 2022.06.13
 
-Utolsó módosítás dátuma: 2022.07.21
-verzió: 03
+Visszaadja a függvény futása után a létrehozott, feldölgozott
+Excel fájl nevét
+
+Visszaadási érték: saveas_szlevfajl - útvonallal együtt
+
+Utolsó módosítás dátuma: 2022.08.04
+verzió: 04
 
 """
 #import openpyxl
-from encodings.utf_8 import encode
-from imp import load_dynamic
+#from encodings.utf_8 import encode
+#from imp import load_dynamic
 import sys
 import ctypes
 from types import NoneType
@@ -24,7 +29,7 @@ import make_pivottabla as mpt
 
 
 def excelfajl_modositas(initomb, logfile):
-    # Utolsó módosítás dátuma: 2022.07.21
+    # Utolsó módosítás dátuma: 2022.08.04
 
     logfile.info('Exel forrásfájl feldolgozása elindult')
 
@@ -440,6 +445,9 @@ def excelfajl_modositas(initomb, logfile):
         sys.exit(0)
 
     logfile.info('Exel forrásfájl feldolgozása befejeződött')
+
+    # átalakított adatokat tartalmazó Excel fájl neve (elérési úttal együtt)
+    return saveas_szlevfajl
 
 
 def fejlecnevek(rs):

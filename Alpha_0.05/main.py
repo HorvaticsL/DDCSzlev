@@ -2,7 +2,7 @@
 DDCSzlev kezdőfájl
 Készült: 2022.05.31
 
-Utolsó módosítás dátuma: 2022.06.15
+Utolsó módosítás dátuma: 2022.08.04
 verzió: 01
 
 """
@@ -12,6 +12,8 @@ import ini_fajl as inif
 import konyvtar_kezeles as dirkez
 import naplozas
 import excel_feldolgozasa as exelfeld
+import db_SAPCikkek as dbsapcikk
+
 
 def foprogram():
     # Utolsó módosítás dátuma: 2022.06.15
@@ -41,7 +43,7 @@ def foprogram():
         sys.exit(0)
     except Exception as merror:
         logfile.error('Ismeretlen hiba típusa, leírás: %s: %s',
-                    str(type(merror)), str(merror))
+                      str(type(merror)), str(merror))
         logfile.warning("A program leállt!")
         MessageBox = ctypes.windll.user32.MessageBoxW
         MessageBox(
@@ -55,9 +57,13 @@ def foprogram():
     # **** INI fájl... blokk vége ****
 
     # forrás - export - EXCEL fájl átalakítása
-    exelfeld.excelfajl_modositas(initomb, logfile)
+    # futás végé visszaadja az átalakított Excel fájl
+    # nevét, elérési úttal együtt
+    #saveas_Excelfile=exelfeld.excelfajl_modositas(initomb, logfile)
 
-    # adatbázisba mentés
+    # adatbázisba mentés - SAP cikkek
+    dbsapcikk.SAPCikkek_feltoltese(initomb, logfile)
+
     # ellenőrzés
 
     # program futásának vége
