@@ -213,7 +213,58 @@ fájlban lévő utasítást.
 A napolo változónevet, átírtam logfile változónévre.
     logfile = naplozas.naplolog()
 
-
-
+2022.08.04
+verzió: alpha_0.05
+SAP cikkek felvezetése az adatbázisba
+    ODBC kapcsolat az SQL szerverrel
+    Soronkénti adatbeolvasása az EXCEL-ből és beírása az adatbázisba
+    BEGINTRANS - Tranzakciókezelésre a Pythonban nincs szükség, mivel
+        beépítve kezeli az pyodbc
     
+    Ahol az EXCEL táblában nincs bejegyzés (üres a mező), ott az 
+    adatbázisba "None" megjegyzés kerül.
+    Ennek elkerülésére jó az alábbi examplekód:
+        
+        if type(sapcikksheet['I'+aktsor].value) == NoneType:
+                megjegyzes = ''
+            else:
+                megjegyzes = sapcikksheet['I'+aktsor].value
+
+2022.08.05
+verzió: alpha_0.05
+Az ODBC kapcsolatot külön fájlba tettem, hogy egy helyen kelljen/lehessen
+karbantartani a kódot (adatbconnect.py)
+Ebben a fájlban lesznek külön-külön függvényekbe az esetleges többi
+kapcsolatkezelő beállítás
+
+2022.08.30
+verzió: alpha_0.05
+Az INI fájlban módosítani kellett a fuvardíj ellenőrző program nevét, mivel az időközben
+változott, verziót lépet.
+
+Az ODBC új rekord hozzáadása string összeállítása, tesztelése
+Minden futtásnál elöszőr törlöm az adattábla tartalmát.
+Hiba esetén rollback-et állítottam be az adatbázis műveletre.
+
+A EURO árfolyamot nem veszi át az adatbázis, mivel string típusú az Excel táblában,
+én meg float típusra írtam be az adattáblába.
+Az adattáblában átállítottam a mező típusát string-re.
+
+A "FuvardijNetto" mező tartalmát nem olvassa be az adatbázisba, NONE (null) értékeket
+vesz át az adatbázis. Gyors megoldásként az Excel fájl feldolgozásánál minden sorban
+a bruttó díjból kivontam az útdíjat.
+
+Egy új mezőt hoztam létre az adattáblában: rögzítés dátuma -> mikor került felvezetésre
+a táblába az adott rekord.
+
+2022.08.31
+verzió: alpha_0.05
+Megtaláltam a nettó díj hibáját.
+Eredetileg képlettel számoltam (string típusként) ki a nettó díjat.
+Javítottam a képletet, ahol egy az egyben az oszlop azonosítókkal végeztem el a kivonásokat
+ahol kellett. Azaz a Python-nal végeztettem el a számítást nem az Excel táblával.
+
+Az EURO árfolyam számra való konvertálását hagytam szövegként.
+
+Adattábla törlést kikapcsoltam.
 

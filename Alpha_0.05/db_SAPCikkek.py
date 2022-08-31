@@ -13,33 +13,10 @@ import sys
 import ctypes
 from types import NoneType
 from openpyxl import load_workbook
-import pyodbc
 
 import ini_fajl as inif
 import datumido as di
-
-
-def ODBC_Kapcsolat(driver, sqlserver, sqldatabase):
-    '''
-    ODBC Connectstring összeállítása
-    Adatbázis megnyitása
-
-    Utolsó módosítás dátuma: 2022.08.04
-
-    '''
-
-    kapcsolat = pyodbc.connect(
-        #"DRIVER={ODBC Driver 18 for SQL Server};"
-        "DRIVER={" + driver + "};"
-        "SERVER=" + sqlserver + ";"
-        "DATABASE=" + sqldatabase + ";"
-        "Trusted_Connection=yes;"
-        "Encrypt=no"
-    )
-
-    return kapcsolat
-
-    # ***** ODBC_Kapcsolat VÉGE
+import adatbconnect as dbconnect
 
 
 def SAPCikkek_feltoltese(initomb, logfile):
@@ -72,7 +49,7 @@ def SAPCikkek_feltoltese(initomb, logfile):
         sapcikksheet = utdij_book[sapcikk_sheet]
         
         logfile.info('ODBC kapcsolat megnyitása')
-        kapcs = ODBC_Kapcsolat(odbc_driver, sqlszerver, sqladatb)
+        kapcs =  dbconnect.ODBC_Kapcsolat(odbc_driver, sqlszerver, sqladatb)
         kapcscursor = kapcs.cursor()
 
         # Táblában lévő adatok törlése (DELETE ALL)

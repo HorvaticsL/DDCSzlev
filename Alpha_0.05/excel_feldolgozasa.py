@@ -9,7 +9,7 @@ Excel fájl nevét
 
 Visszaadási érték: saveas_szlevfajl - útvonallal együtt
 
-Utolsó módosítás dátuma: 2022.08.04
+Utolsó módosítás dátuma: 2022.08.31
 verzió: 04
 
 """
@@ -199,14 +199,14 @@ def excelfajl_modositas(initomb, logfile):
                 #ÖML - HU - ZF47
                 if munkalap['D' + sr].value == '001' and munkalap['P' + sr].value == 'HU' and munkalap['R' + sr].value == 'ZF47':
                     munkalap["AE" + str(
-                        sr)].value = f'={munkalap["AH" + sr].value - munkalap["AG" + sr].value}'
+                        sr)].value = munkalap["AH" + sr].value - munkalap["AG" + sr].value
                     logfile.info("ÖML - HU - ZF47 fuvardíj: %s",
                                  str(munkalap['AE'+sr].value))
 
                 #PAL - HU - ZF47
                 if munkalap['D' + sr].value == '006' and munkalap['P' + sr].value == 'HU' and munkalap['R' + sr].value == 'ZF47':
                     munkalap["AE" + str(
-                        sr)].value = f'={munkalap["AH" + sr].value - munkalap["AG" + sr].value}'
+                        sr)].value = munkalap["AH" + sr].value - munkalap["AG" + sr].value
                     logfile.info("PAL - HU - ZF47 fuvardíj: %s",
                                  str(munkalap['AE'+sr].value))
 
@@ -233,7 +233,7 @@ def excelfajl_modositas(initomb, logfile):
                                 break
 
                         munkalap["AE" + str(
-                            sr)].value = f'={munkalap["AH" + sr].value - munkalap["AG" + sr].value}'
+                            sr)].value = munkalap["AH" + sr].value - munkalap["AG" + sr].value
                     # **** JOHANS rövidkód VÉGE
 
                     # Kemencepor
@@ -257,7 +257,7 @@ def excelfajl_modositas(initomb, logfile):
                                 break
 
                         munkalap["AE" + str(
-                            sr)].value = f'={munkalap["AH" + sr].value - munkalap["AG" + sr].value}'
+                            sr)].value = munkalap["AH" + sr].value - munkalap["AG" + sr].value
                     # **** Kemencepor VÉGE
                 # **** ÖML - HU - ZF49 VÉGE
 
@@ -288,7 +288,7 @@ def excelfajl_modositas(initomb, logfile):
                             break
 
                     munkalap["AE" + str(
-                        sr)].value = f'={munkalap["AH" + sr].value - munkalap["AG" + sr].value}'
+                        sr)].value = munkalap["AH" + sr].value - munkalap["AG" + sr].value
                 # **** ÖML - SK - ZF49 - hosszúkód VÉGE
 
                 # PAL - SK - ZF49
@@ -330,7 +330,7 @@ def excelfajl_modositas(initomb, logfile):
                             break
 
                     munkalap["AE" + str(
-                        sr)].value = f'={munkalap["AH" + sr].value - munkalap["AG" + sr].value}'
+                        sr)].value = munkalap["AH" + sr].value - munkalap["AG" + sr].value
                 # **** PAL - SK - ZF49 - hosszúkód VÉGE
             # **** CPT VÉGE
 
@@ -346,6 +346,9 @@ def excelfajl_modositas(initomb, logfile):
                 munkalap["AH" + sr].value = 0
 
             # **** Incoterms vizsgálata VÉGE
+
+            # EUR árfolyam konvertálása számra
+            
 
             # áttárolás/értékesítés/visszavét beállítása
             megrendelokod = munkalap['K'+sr].value

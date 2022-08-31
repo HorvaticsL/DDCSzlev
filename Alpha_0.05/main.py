@@ -13,6 +13,7 @@ import konyvtar_kezeles as dirkez
 import naplozas
 import excel_feldolgozasa as exelfeld
 import db_SAPCikkek as dbsapcikk
+import db_SAPSzlev as dbsapszlev
 
 
 def foprogram():
@@ -59,10 +60,11 @@ def foprogram():
     # forrás - export - EXCEL fájl átalakítása
     # futás végé visszaadja az átalakított Excel fájl
     # nevét, elérési úttal együtt
-    #saveas_Excelfile=exelfeld.excelfajl_modositas(initomb, logfile)
+    saveas_Excelfile=exelfeld.excelfajl_modositas(initomb, logfile)
 
     # adatbázisba mentés - SAP cikkek
-    dbsapcikk.SAPCikkek_feltoltese(initomb, logfile)
+    #dbsapcikk.SAPCikkek_feltoltese(initomb, logfile)
+    dbsapszlev.SAPSzlev_feltoltese(saveas_Excelfile, initomb, logfile)
 
     # ellenőrzés
 
