@@ -29,11 +29,11 @@ INI fájl (config) létrehozása (ver 01)
     Munkalap VAC-SK-PAL
 
 main.py
-
+----- ***** -----
 2022.06.13
 A GIT verzió követés elkezdése, beállítása
 A hiba naplózás (naplozas.py) beállítása
-
+----- ***** -----
 2022.06.15
 Hiba naplozás (log) véglegesítése: módosítás
 Excel fájlfeldolgozás
@@ -47,7 +47,7 @@ Excel fájlfeldolgozás
 GIT-be olvasás
 preAlpha verzió lezárása
 ****
-
+----- ***** -----
 ****
 Alpha - kezdés: 2022.06.15
 
@@ -69,7 +69,7 @@ Ciklus (for) készítése, ami végig járja a sorokat, oszlopkat
     első oszloptól a maxoszlopig
     oszlopszám álakítása betűre (okar=get_column_letter(oszlop))
     formátum: munkalap[oszlop + sor].value
-
+----- ***** -----
 2022.07.04
 Soronként ellenőrzések elkezdése
     ÖML-CPT-HU-ZF47 - feltétel esetén bruttó fuvardíjból kivonja az útdíjat
@@ -77,7 +77,7 @@ Soronként ellenőrzések elkezdése
     EXW esetén az útdíjat beállítja nullára
     Helységnév beállítás helyének kialakítása, de az adatellenőrzés még nincs meg
     Ha nem CPT és nem is EXW, akkor az útdíj mindig nullára
-
+----- ***** -----
 2022.07.05
 verzió: alpha_0.02
 
@@ -92,7 +92,7 @@ EXCEL fájl átalakítása:
         EXW esetén nettofuvardíj=0, útdíj=0, fuvar+útdíj=0
         ha ismeretlen az Icoterms (nem CPT és nem EXW) esetén nettofuvardíj=0, útdíj=0, fuvar+útdíj=alpha_0
     sor hivatkozás egyeszerűsítése sr=str(sor)
-    
+----- ***** -----    
 2022.07.06
 verzió: alpha_0.02
 
@@ -103,7 +103,7 @@ Helységnevek kikeresése, felülírása ciklussal
         ellenőrzésével megoldva.
     Ha nincs adat a fájlban, azt type() változóval van ellenőrizve
         type(változó) != NoneType
-
+----- ***** -----
 2022.07.07
 verzió: alpha_0.03
 
@@ -119,7 +119,7 @@ EXCEL fájl átalakítása:
         Gyárankénti értékek beolvasása
         A helységneveket nagybetűre kellett állítani, hogy összelehessen hasonlítani
             az értékeket (szállítólevél helység == útdíj helység)
-        
+----- ***** -----        
 2022.07.08
 verzió: alpha_0.03
 
@@ -144,7 +144,7 @@ Excel fájl átalakítása:
         tartomány beállítása az INI fájl alapján
         keresni kell a hosszúkód ('1832xxxxxx) és rövid kódos fuvarozók szétválasztása
             ennek megfelően a útdíj beírása a cellába
-
+----- ***** -----
 2022.07.12
 verzió: alpha_0.03   
 INI fájl bővítése:
@@ -161,7 +161,7 @@ Excel fájl átalakítása:
         Petrányi esetében az útdíjszorzó 2
         Összes többi fuvarozónál az útdíjszorzó 1,2
     Minden fájl bezárásra kerül a ciklusból való kilépés után
-    
+----- ***** -----    
 2022.07.12
 verzió: alpha_0.04
 Excel fájl átalakítása:
@@ -171,7 +171,7 @@ Excel fájl átalakítása:
         Kimutatás neveket tartalmazó mukalap megnyitása
         Oszlop hozzáadása táblához: Kimutatásnév
         A celle a kimutatásnevet vagy 'ism. fuvarozó' tartalmaz
-        
+----- ***** -----        
 2022.07.13
 verzió: alpha_0.04
 Excel fájl átalakítása:
@@ -186,7 +186,7 @@ Excel fájl átalakítása:
         Oszlop hozzáadása táblához: Termékcsoport
     
 Naplófájl feltöltése adatokkal: szállítólevélszámonkénti változások láthatósága
-
+----- ***** -----
 2022.07.19
 verzió: alpha_0.05
 Pivot Table az adatok-ellenőrzéséhez:
@@ -194,11 +194,11 @@ Pivot Table az adatok-ellenőrzéséhez:
     létrehozása, pandas segítségével - make_pivottabla.py
     1. Tonna ellenőrzés, termékcsoport és gyárra
     Külön fájlban kerülnek a táblák, külön munkalapokra
-
+----- ***** -----
 2022.07.20
 verzió: alpha_0.05
 Excel tábla fejlécében a háttérszín fehérre lett állítva
-
+----- ***** -----
 2022.07.20
 verzió: alpha_0.05
 A Pivot Table funkciót elkészítettem, de nem tudom úgy programozni,
@@ -212,7 +212,7 @@ ezért töröltem ezeket és a függvény hívásoknál paraméterben meghívom 
 fájlban lévő utasítást.
 A napolo változónevet, átírtam logfile változónévre.
     logfile = naplozas.naplolog()
-
+----- ***** -----
 2022.08.04
 verzió: alpha_0.05
 SAP cikkek felvezetése az adatbázisba
@@ -229,14 +229,14 @@ SAP cikkek felvezetése az adatbázisba
                 megjegyzes = ''
             else:
                 megjegyzes = sapcikksheet['I'+aktsor].value
-
+----- ***** -----
 2022.08.05
 verzió: alpha_0.05
 Az ODBC kapcsolatot külön fájlba tettem, hogy egy helyen kelljen/lehessen
 karbantartani a kódot (adatbconnect.py)
 Ebben a fájlban lesznek külön-külön függvényekbe az esetleges többi
 kapcsolatkezelő beállítás
-
+----- ***** -----
 2022.08.30
 verzió: alpha_0.05
 Az INI fájlban módosítani kellett a fuvardíj ellenőrző program nevét, mivel az időközben
@@ -256,7 +256,7 @@ a bruttó díjból kivontam az útdíjat.
 
 Egy új mezőt hoztam létre az adattáblában: rögzítés dátuma -> mikor került felvezetésre
 a táblába az adott rekord.
-
+----- ***** -----
 2022.08.31
 verzió: alpha_0.05
 Megtaláltam a nettó díj hibáját.
@@ -267,4 +267,15 @@ ahol kellett. Azaz a Python-nal végeztettem el a számítást nem az Excel táb
 Az EURO árfolyam számra való konvertálását hagytam szövegként.
 
 Adattábla törlést kikapcsoltam.
+----- ***** -----
+2022.09.02
+verzió: alpha_0.05
+A main.py fájl átnevezése ExcelToSQL.py -ra. Ez lett a programneve.
+
+pyinstaller hozzáadása a környezethez.
+EXE egy fájlas konvertálása működik.
+CMD ablakból futtatható a program, az N meghajtón létre lett hozva egy könyvtár (ExcelToSQL)
+    - NAPLO néven könyvtárat kell létrehozni 
+    - az DDCSZlev.ini fájlt át kell másolni
+
 
