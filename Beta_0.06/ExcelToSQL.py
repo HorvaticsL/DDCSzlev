@@ -60,7 +60,7 @@ def foprogram():
     # forrás - export - EXCEL fájl átalakítása
     # futás végé visszaadja az átalakított Excel fájl
     # nevét, elérési úttal együtt
-    saveas_Excelfile=exelfeld.excelfajl_modositas(initomb, logfile)
+    saveas_Excelfile = exelfeld.excelfajl_modositas(initomb, logfile)
 
     # adatbázisba mentés - SAP cikkek
     #dbsapcikk.SAPCikkek_feltoltese(initomb, logfile)
