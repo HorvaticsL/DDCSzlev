@@ -4,8 +4,8 @@ felvezetése az SQL adatbázisba.
 
 Készült: 2022.08.04
 
-Utolsó módosítás dátuma: 2022.08.04
-verzió: 01
+Utolsó módosítás dátuma: 2022.09.15
+verzió: 02
 
 """
 
@@ -14,27 +14,30 @@ import ctypes
 from types import NoneType
 from openpyxl import load_workbook
 
-import ini_fajl as inif
+import read_config as readcfg
 import datumido as di
 import adatbconnect as dbconnect
 
 
-def SAPCikkek_feltoltese(initomb, logfile):
+def SAPCikkek_feltoltese(inifajl, logfile):
+
+    # INI fájl megnyitása
+    config = readcfg.read_config(inifajl)
 
     logfile.info('Adatbázis műveletek: SAPCikkek')
-    prgneve = inif.initomb_eleme(initomb, 0)
+    prgneve = config['EXE-File']['exe-file neve']
 
-    utdijmappa = inif.initomb_eleme(initomb, 11)
-    utdijfile = inif.initomb_eleme(initomb, 12)
-    sapcikk_sheet = inif.initomb_eleme(initomb, 48)
-    
-    odbc_driver = inif.initomb_eleme(initomb, 51)
+    utdijmappa = config['Utdij-EXCEL']['utdij mappa']
+    utdijfile = config['Utdij-EXCEL']['utdij file neve']
+    sapcikk_sheet = config['Utdij-EXCEL']['utdij sapcikkek-munkalap']
+
+    odbc_driver = config['SQL-Server']['odbc driver']
     logfile.info('ODBC driver: %s', str(odbc_driver))
-    sqlszerver = inif.initomb_eleme(initomb, 52)
+    sqlszerver = config['SQL-Server']['sql server name']
     logfile.info('SQL szerver: %s', str(sqlszerver))
-    sqladatb = inif.initomb_eleme(initomb, 53)
+    sqladatb = config['SQL-Server']['sql database name']
     logfile.info('Adatbázis: %s', str(sqladatb))
-    sqlSAPCikkek = inif.initomb_eleme(initomb, 54)
+    sqlSAPCikkek = config['SQL-Server']['sql sap cikkek adattabla']
     logfile.info('Adatbázis-tábla: %s', str(sqlSAPCikkek))
 
     utdijfajl = str(utdijmappa) + str(utdijfile)
@@ -47,9 +50,9 @@ def SAPCikkek_feltoltese(initomb, logfile):
         logfile.info('Excel fájl megnyitása a SAP cikkekhez')
         utdij_book = load_workbook(filename=utdijfajl, data_only=True)
         sapcikksheet = utdij_book[sapcikk_sheet]
-        
+
         logfile.info('ODBC kapcsolat megnyitása')
-        kapcs =  dbconnect.ODBC_Kapcsolat(odbc_driver, sqlszerver, sqladatb)
+        kapcs = dbconnect.ODBC_Kapcsolat(odbc_driver, sqlszerver, sqladatb)
         kapcscursor = kapcs.cursor()
 
         # Táblában lévő adatok törlése (DELETE ALL)

@@ -2,13 +2,13 @@
 DDCSzlev kezdőfájl
 Készült: 2022.05.31
 
-Utolsó módosítás dátuma: 2022.08.04
-verzió: 01
+Utolsó módosítás dátuma: 2022.09.15
+verzió: 02
 
 """
 import sys
 import ctypes
-import ini_fajl as inif
+import generate_config as makecfg
 import konyvtar_kezeles as dirkez
 import naplozas
 import excel_feldolgozasa as exelfeld
@@ -23,14 +23,14 @@ def foprogram():
     logfile = naplozas.naplolog()
     logfile.info("Kezdődik program")
 
-    # INI fájl adatok beolvasása, tömbbe
+    # INI fájl létrehozása
     try:
         akt_konyvtar = dirkez.aktualismappa()
-        ini_fajlneve = "\\DDCSzlev.ini"
+        ini_fajlneve = "\\DDCSzlev_v2.ini"
         inifajl = str(akt_konyvtar) + ini_fajlneve
+        # INI fájl létrehozása a futási könyvtárban
+        makecfg.make_config_file(inifajl)
 
-        # initomb változó tartalmazza az összes paraméter elemet
-        initomb = inif.read_ini_file(inifajl)
     except FileNotFoundError:
         logfile.error("Az INI fájl nem található: %s", str(inifajl))
         logfile.warning("A program leállt!")
@@ -58,13 +58,14 @@ def foprogram():
     # **** INI fájl... blokk vége ****
 
     # forrás - export - EXCEL fájl átalakítása
-    # futás végé visszaadja az átalakított Excel fájl
+    # futás végén visszaadja az átalakított Excel fájl
     # nevét, elérési úttal együtt
-    saveas_Excelfile = exelfeld.excelfajl_modositas(initomb, logfile)
+    saveas_Excelfile = exelfeld.excelfajl_modositas(inifajl, logfile)
 
     # adatbázisba mentés - SAP cikkek
-    #dbsapcikk.SAPCikkek_feltoltese(initomb, logfile)
-    dbsapszlev.SAPSzlev_feltoltese(saveas_Excelfile, initomb, logfile)
+    dbsapcikk.SAPCikkek_feltoltese(inifajl, logfile)
+    # adatbázisba mentés - SAP szállítólevelek
+    dbsapszlev.SAPSzlev_feltoltese(saveas_Excelfile, inifajl, logfile)
 
     # ellenőrzés
 

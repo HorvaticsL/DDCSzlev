@@ -9,7 +9,7 @@ Excel fájl nevét
 
 Visszaadási érték: saveas_szlevfajl - útvonallal együtt
 
-Utolsó módosítás dátuma: 2022.08.31
+Utolsó módosítás dátuma: 2022.09.15
 verzió: 04
 
 """
@@ -23,68 +23,76 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import PatternFill
 #from openpyxl.utils import get_column_letter
 
-import ini_fajl as inif
+import read_config as readcfg
 import datumido as di
 import make_pivottabla as mpt
 
 
-def excelfajl_modositas(initomb, logfile):
-    # Utolsó módosítás dátuma: 2022.08.04
+def excelfajl_modositas(inifajl, logfile):
+    # Utolsó módosítás dátuma: 2022.09.15
 
     logfile.info('Exel forrásfájl feldolgozása elindult')
 
+    # INI fájladatok megnyitása
+    config = readcfg.read_config(inifajl)
+
     # INI fájladatok beolvasása
-    prgneve = inif.initomb_eleme(initomb, 0)
+    prgneve = config['EXE-File']['exe-file neve']
     # szállítólevelek forrás fájl
-    excelfile = inif.initomb_eleme(initomb, 3)
-    excelmappa = inif.initomb_eleme(initomb, 4)
-    wbsheetneve = inif.initomb_eleme(initomb, 5)
+    excelfile = config['SAP-Excel']['sapexcel file neve']
+    excelmappa = config['SAP-Excel']['sapexcel mappa']
+    wbsheetneve = config['SAP-Excel']['sapexcel munkalap']
 
     # helységnevek
-    helysegmappa = inif.initomb_eleme(initomb, 6)
-    helysegfile = inif.initomb_eleme(initomb, 7)
-    helysegsheet = inif.initomb_eleme(initomb, 8)
-    helysegbalfelso = inif.initomb_eleme(initomb, 9)
-    helysegjobbalso = inif.initomb_eleme(initomb, 10)
+    helysegmappa = config['Helysegnev-EXCEL']['helysegnev mappa']
+    helysegfile = config['Helysegnev-EXCEL']['helysegnev file neve']
+    helysegsheet = config['Helysegnev-EXCEL']['helysegnev munkalap']
+    helysegbalfelso = config['Helysegnev-EXCEL']['helysegnev tartomany bal-felso']
+    helysegjobbalso = config['Helysegnev-EXCEL']['helysegnev tartomany jobb-also']
 
     # útdíj adatok a belföld és PAL-SK
-    utdijmappa = inif.initomb_eleme(initomb, 11)
-    utdijfile = inif.initomb_eleme(initomb, 12)
-    utdij_beresheet = inif.initomb_eleme(initomb, 13)
-    utdij_vacsheet = inif.initomb_eleme(initomb, 14)
-    utdij_sksheet = inif.initomb_eleme(initomb, 15)
-    utdijbalfelso = inif.initomb_eleme(initomb, 16)
-    utdijjobbalso = inif.initomb_eleme(initomb, 17)
-    kimutatasnev_sheet = inif.initomb_eleme(initomb, 45)
-    kimutatasnev_balfelso = inif.initomb_eleme(initomb, 46)
-    kimutatasnev_jobbalso = inif.initomb_eleme(initomb, 47)
-    sapcikk_sheet = inif.initomb_eleme(initomb, 48)
-    sapcikk_balfelso = inif.initomb_eleme(initomb, 49)
-    sapcikk_jobbalso = inif.initomb_eleme(initomb, 50)
+    utdijmappa = config['Utdij-EXCEL']['utdij mappa']
+    utdijfile = config['Utdij-EXCEL']['utdij file neve']
+    utdij_beresheet = config['Utdij-EXCEL']['utdij bere-munkalap']
+    utdij_vacsheet = config['Utdij-EXCEL']['utdij vac-munkalap']
+    utdij_sksheet = config['Utdij-EXCEL']['utdij sk-munkalap']
+    utdijbalfelso = config['Utdij-EXCEL']['utdij tartomany bal-felso']
+    utdijjobbalso = config['Utdij-EXCEL']['utdij tartomany jobb-also']
+    kimutatasnev_sheet = config['Utdij-EXCEL']['utdij kimutatasnev-munkalap']
+    kimutatasnev_balfelso = config['Utdij-EXCEL']['utdij kimutatasnev tartomany bal-felso']
+    kimutatasnev_jobbalso = config['Utdij-EXCEL']['utdij kimutatasnev tartomany jobb-also']
+    sapcikk_sheet = config['Utdij-EXCEL']['utdij sapcikkek-munkalap']
+    sapcikk_balfelso = config['Utdij-EXCEL']['utdij sapcikkek tartomany bal-felso']
+    sapcikk_jobbalso = config['Utdij-EXCEL']['utdij sapcikkek tartomany jobb-also']
 
     # SAP kódok
-    gyvac = inif.initomb_eleme(initomb, 18)
-    gybere = inif.initomb_eleme(initomb, 19)
-    gyecser = inif.initomb_eleme(initomb, 20)
+    gyvac = config['SAP-Gyarak']['sap vác gyár']
+    gybere = config['SAP-Gyarak']['sap beremend gyár']
+    gyecser = config['SAP-Gyarak']['sap ecser gyár']
 
     # útdíj adatok ÖML-SK
-    artabla_mappa = inif.initomb_eleme(initomb, 21)
-    skoml_utdijfile = inif.initomb_eleme(initomb, 24)
-    skoml_utdijsheet = inif.initomb_eleme(initomb, 43)
-    skoml_utdijbalfelso = inif.initomb_eleme(initomb, 25)
-    skoml_utdijjobbalso = inif.initomb_eleme(initomb, 26)
+    artabla_mappa = config['Fuvardij-Artablak']['artabla mappa']
+    skoml_utdijfile = config['Fuvardij-Artablak']['artabla vac-sk-oml file neve']
+    skoml_utdijsheet = config['Fuvardij-Artablak']['artabla vac-sk-oml munkalap']
+    skoml_utdijbalfelso = config['Fuvardij-Artablak']['artabla vac-sk-oml tartomany bal-felso']
+    skoml_utdijjobbalso = config['Fuvardij-Artablak']['artabla vac-sk-oml tartomany jobb-also']
+    skoml_utdij2x = config['Fuvardij-Artablak']['artabla vac-sk-oml tartomany utdij2x']
+    skoml_utdij1x = config['Fuvardij-Artablak']['artabla vac-sk-oml tartomany utdij1x']
 
     # útdíj adatok PAL-SK
-    skpal_utdijfile = inif.initomb_eleme(initomb, 27)
-    skpal_utdijsheet = inif.initomb_eleme(initomb, 44)
-    skpal_utdijbalfelso = inif.initomb_eleme(initomb, 28)
-    skpal_utdijjobbalso = inif.initomb_eleme(initomb, 29)
+    skpal_utdijfile = config['Fuvardij-Artablak']['artabla vac-sk-pal file neve']
+    skpal_utdijsheet = config['Fuvardij-Artablak']['artabla vac-sk-pal munkalap']
+    skpal_utdijbalfelso = config['Fuvardij-Artablak']['artabla vac-sk-pal tartomany bal-felso']
+    skpal_utdijjobbalso = config['Fuvardij-Artablak']['artabla vac-sk-pal tartomany jobb-also']
+    skpal_utdij2x = config['Fuvardij-Artablak']['artabla vac-sk-pal tartomany utdij2x']
+    # ZFT2 1,2x
+    skpal_utdij12x = config['Fuvardij-Artablak']['artabla vac-sk-pal tartomany utdij12x']
 
-    sapjohans = inif.initomb_eleme(initomb, 30)
-    sapkemencepor = inif.initomb_eleme(initomb, 31)
-    sapspeedline = inif.initomb_eleme(initomb, 32)
-    sapnordsped = inif.initomb_eleme(initomb, 33)
-    sappetranyi = inif.initomb_eleme(initomb, 34)
+    sapjohans = config['SAPkodok']['fuvaros-johans']
+    sapkemencepor = config['SAPkodok']['cikk-kemencepor']
+    sapspeedline = config['SAPkodok']['fuvaros-speedline']
+    sapnordsped = config['SAPkodok']['fuvaros-nordsped']
+    sappetranyi = config['SAPkodok']['fuvaros-petranyi']
     # ***** INI fájladatok beolvasása VÉGE
 
     szlevfajl = str(excelmappa) + str(excelfile)
@@ -275,12 +283,14 @@ def excelfajl_modositas(initomb, logfile):
                                 if fuvarozokod[0:4] == '1832':
                                     # oszlopok száma nullával kezdődik, így a táblában lévő
                                     # sorszámból egyet le kell vonni
-                                    munkalap['AG'+sr].value = j[67].value
+                                    #munkalap['AG'+sr].value = j[67].value
+                                    munkalap['AG'+sr].value = j[int(skoml_utdij1x)].value
                                     logfile.info(
                                         "ÖML - HU - ZF49 1x útdíj: %s", str(munkalap['AG'+sr].value))
                                     break
                                 else:
-                                    munkalap['AG'+sr].value = j[66].value
+                                    #munkalap['AG'+sr].value = j[66].value
+                                    munkalap['AG'+sr].value = j[int(skoml_utdij2x)].value
                                     logfile.info(
                                         "ÖML - HU - ZF49 2x útdíj: %s", str(munkalap['AG'+sr].value))
                                     break
@@ -315,14 +325,15 @@ def excelfajl_modositas(initomb, logfile):
                                 if fuvarozokod == sappetranyi:
                                     # oszlopok száma nullával kezdődik, így a táblában lévő
                                     # sorszámból egyet le kell vonni
+                                    #munkalap['AG' + sr].value = j[22].value
                                     munkalap['AG' +
-                                             sr].value = j[22].value
+                                             sr].value = j[int(skpal_utdij2x)].value
                                     logfile.info(
                                         "PAL - HU - ZF49 Petrányi 2x útdíj: %s", str(munkalap['AG'+sr].value))
                                     break
                                 else:
-                                    munkalap['AG' +
-                                             sr].value = j[21].value
+                                    #munkalap['AG' + sr].value = j[21].value
+                                    munkalap['AG' + sr].value = j[int(skpal_utdij12x)].value
                                     logfile.info(
                                         "PAL - HU - ZF49 1,2x útdíj: %s", str(munkalap['AG'+sr].value))
                                     break
@@ -348,7 +359,6 @@ def excelfajl_modositas(initomb, logfile):
             # **** Incoterms vizsgálata VÉGE
 
             # EUR árfolyam konvertálása számra
-            
 
             # áttárolás/értékesítés/visszavét beállítása
             megrendelokod = munkalap['K'+sr].value

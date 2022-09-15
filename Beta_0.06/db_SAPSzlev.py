@@ -4,8 +4,8 @@ felvezetése az SQL adatbázisba.
 
 Készült: 2022.08.05
 
-Utolsó módosítás dátuma: 2022.08.31
-verzió: 01
+Utolsó módosítás dátuma: 2022.09.15
+verzió: 02
 
 """
 
@@ -15,7 +15,7 @@ from types import NoneType
 from openpyxl import load_workbook
 from datetime import datetime
 
-import ini_fajl as inif
+import read_config as readcfg
 import datumido as di
 import adatbconnect as dbconnect
 
@@ -32,31 +32,34 @@ def urescella(cella):
     return megjegyzes
 
 
-def SAPSzlev_feltoltese(excelfile, initomb, logfile):
+def SAPSzlev_feltoltese(excelfile, inifajl, logfile):
     '''
     Excel tábla tartalmának betöltése az SQL adatbázisba
     ODBC kapcsolattal.
 
     Paraméterek:
     excelfile = ez a fájl tartalmazza a betöltendő adatokat
-    initomb = INI fájlban lévő adatok ebből a tömbből olvashatók ki
+    inifajl = INI fájlban lévő adatok ebből a fájlból olvashatók ki
     logile = LOG fájl írása
 
-    Utolső módosítás dátuma: 2022.08.30
+    Utolső módosítás dátuma: 2022.09.15
     '''
 
+    # INI fájl megnyitása
+    config = readcfg.read_config(inifajl)
+
     logfile.info('Adatbázis műveletek: SAPSzallitolevelek')
-    prgneve = inif.initomb_eleme(initomb, 0)
+    prgneve = config['EXE-File']['exe-file neve']
 
-    sapszlev_sheet = inif.initomb_eleme(initomb, 5)
+    sapszlev_sheet = config['SAP-Excel']['sapexcel munkalap']
 
-    odbc_driver = inif.initomb_eleme(initomb, 51)
+    odbc_driver = config['SQL-Server']['odbc driver']
     logfile.info('ODBC driver: %s', str(odbc_driver))
-    sqlszerver = inif.initomb_eleme(initomb, 52)
+    sqlszerver = config['SQL-Server']['sql server name']
     logfile.info('SQL szerver: %s', str(sqlszerver))
-    sqladatb = inif.initomb_eleme(initomb, 53)
+    sqladatb = config['SQL-Server']['sql database name']
     logfile.info('Adatbázis: %s', str(sqladatb))
-    sqlSAPSzlev = inif.initomb_eleme(initomb, 55)
+    sqlSAPSzlev = config['SQL-Server']['sql szallitolevel adattábla']
     logfile.info('Adatbázis-tábla: %s', str(sqlSAPSzlev))
 
     logfile.info('Excelfájl (SAP szállítólevelek): %s', str(excelfile))
@@ -84,7 +87,7 @@ def SAPSzlev_feltoltese(excelfile, initomb, logfile):
         kapcscursor.execute(delete_sql)
         kapcs.commit()
         '''
-        
+
         for sor in range(2, maxsor+1):
             aktsor = str(sor)
 
@@ -105,7 +108,8 @@ def SAPSzlev_feltoltese(excelfile, initomb, logfile):
             mszamlaszama = urescella(sapszlevsheet['T' + aktsor].value)
             logfile.info('Számlaszáma: %s', str(mszamlaszama))
 
-            mnettofuvardij = sapszlevsheet['AH' + aktsor].value - sapszlevsheet['AG' + aktsor].value
+            mnettofuvardij = sapszlevsheet['AH' +
+                                           aktsor].value - sapszlevsheet['AG' + aktsor].value
             logfile.info('Nettó fuvardíj: %s', str(mnettofuvardij))
 
             #insert_sql=("INSERT INTO Szallitolevelek ([FuvardijNetto]) VALUES(?)")
@@ -113,7 +117,6 @@ def SAPSzlev_feltoltese(excelfile, initomb, logfile):
             #print(sapszlevsheet['AE' + aktsor].value)
             #print(type(sapszlevsheet['AE' + aktsor].value))
 
-            
             insert_sql = ("INSERT INTO Szallitolevelek ([ErtSzerv], [Gyar], [SzlevSzama], [Csomagolas], [Incoterms], [Tetel], [AnyagKod], [Rendszam], [FuvarozoKod]," +
                           " [FuvarozoNeve], [MegrendeloKod], [MegrendeloNeve], [ArufogadoKod], [ArufogadoNeve], [Helyseg], [Orszag], [VevoKorzet], [KondicioFajta]," +
                           " [RendelesSzama], [SzamlaSzama], [SzlevDatum], [Tonna], [TonnaMertEgys], [Tavolsag], [TavolsagMertEgys], [SzlaNettoErtek], [SzlaPenznem]," +
@@ -182,7 +185,7 @@ def SAPSzlev_feltoltese(excelfile, initomb, logfile):
                     # FuvarPenznem
                     sapszlevsheet['AD' + aktsor].value,
                     # FuvardijNetto
-                    sapszlevsheet['AO' + aktsor].value,                    
+                    sapszlevsheet['AO' + aktsor].value,
                     # UtdijKondicio
                     sapszlevsheet['AF' + aktsor].value,
                     # Utdij
@@ -201,7 +204,7 @@ def SAPSzlev_feltoltese(excelfile, initomb, logfile):
                     sapszlevsheet['AM' + aktsor].value,
                     # TermekCsoport
                     sapszlevsheet['AN' + aktsor].value,
-                    #RogzitesDatuma
+                    # RogzitesDatuma
                     FelvezetesDatuma
                     )
             kapcscursor.execute(insert_sql, adat)

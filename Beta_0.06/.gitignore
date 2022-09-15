@@ -1,5 +1,6 @@
 # kizárás a verziókövetésből
 
 # NAPLO mappa kizárása
-Naplo/
+DDCSzlev/Naplo/*
+
 

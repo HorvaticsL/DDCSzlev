@@ -277,5 +277,25 @@ EXE egy fájlas konvertálása működik.
 CMD ablakból futtatható a program, az N meghajtón létre lett hozva egy könyvtár (ExcelToSQL)
     - NAPLO néven könyvtárat kell létrehozni 
     - az DDCSZlev.ini fájlt át kell másolni
+----- ***** -----
+2022.09.15
+verzió: beta_0.06
+Az INI fájlkezelés elavultá vált a nehézkes értékek keresése, megadása miatt 
+A Python config kezelésére áltam át: configparser 
+Létrehoztam a INI fájl generátort: generate_config.py
+    az INI fájlt minden futáskor létrehozza, ebben a fájlban kell karbantartani a paraméteradatokat
+Létrehoztam egy INI fájl olvasót: read_config.py   
+    az INI fájlban lévő paramétereket olvassa ki
+
+Módosításra kerültek az alábbi fájlok (az új INI fájlkezeléshez):
+    ExcelToSQL.py - inditófájl
+    excel_feldogozasa.py - SAP fájl feldolgozásánál
+        az INI fájlba bekerült a SK ömlesztett és palettás útdíj értékehez tartozó oszlopszám
+        így a korábbi "beégetett" oszlopszám helyett már változóként lehet megadni
+        erre azért volt szükség, mert más az oszlopszám (ami útdíjat tartalmazza) ha csökken/növekedik
+            a fuvarozók száma 
+    db_SAPCikkek.py - SAP cikkek betöltése az adatbázisba
+    db_SAPSzlev.py - SAP szállítólevelek betöltése az adatbázisba
+
 
 
