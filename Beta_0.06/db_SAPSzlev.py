@@ -185,7 +185,7 @@ def SAPSzlev_feltoltese(excelfile, inifajl, logfile):
                     # FuvarPenznem
                     sapszlevsheet['AD' + aktsor].value,
                     # FuvardijNetto
-                    sapszlevsheet['AO' + aktsor].value,
+                    sapszlevsheet['AE' + aktsor].value,
                     # UtdijKondicio
                     sapszlevsheet['AF' + aktsor].value,
                     # Utdij

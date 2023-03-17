@@ -9,7 +9,7 @@ Excel fájl nevét
 
 Visszaadási érték: saveas_szlevfajl - útvonallal együtt
 
-Utolsó módosítás dátuma: 2022.09.15
+Utolsó módosítás dátuma: 2023.03.17
 verzió: 04
 
 """
@@ -88,7 +88,8 @@ def excelfajl_modositas(inifajl, logfile):
     # ZFT2 1,2x
     skpal_utdij12x = config['Fuvardij-Artablak']['artabla vac-sk-pal tartomany utdij12x']
 
-    sapjohans = config['SAPkodok']['fuvaros-johans']
+    saprjohans = config['SAPkodok']['fuvaros-rjohans']
+    saphjohans = config['SAPkodok']['fuvaros-hjohans']
     sapkemencepor = config['SAPkodok']['cikk-kemencepor']
     sapspeedline = config['SAPkodok']['fuvaros-speedline']
     sapnordsped = config['SAPkodok']['fuvaros-nordsped']
@@ -222,7 +223,7 @@ def excelfajl_modositas(inifajl, logfile):
                 if munkalap['D' + sr].value == '001' and munkalap['P' + sr].value == 'HU' and munkalap['R' + sr].value == 'ZF49':
                     # JOHANS rövidkód
                     fuvarozokod = munkalap['I'+sr].value
-                    if fuvarozokod == sapjohans:
+                    if fuvarozokod == saprjohans:
                         if munkalap['B'+sr].value == gyvac:
                             utrange = utvacsheet[utdijbalfelso: utdijjobbalso]
                         if munkalap['B'+sr].value == gybere:
@@ -235,7 +236,7 @@ def excelfajl_modositas(inifajl, logfile):
                                 if szlevhelyseg.upper() == uthelyseg.upper():
                                     munkalap['AG'+sr].value = i[9].value
                                     logfile.info(
-                                        "ÖML - HU - ZF47 JOHANS útdíj: %s", str(munkalap['AG'+sr].value))
+                                        "ÖML - HU - ZF47 JOHANS (rövid) útdíj: %s", str(munkalap['AG'+sr].value))
                                     break
                             else:
                                 break
@@ -243,6 +244,30 @@ def excelfajl_modositas(inifajl, logfile):
                         munkalap["AE" + str(
                             sr)].value = munkalap["AH" + sr].value - munkalap["AG" + sr].value
                     # **** JOHANS rövidkód VÉGE
+
+                    # JOHANS hosszúkód
+                    fuvarozokod = munkalap['I'+sr].value
+                    if fuvarozokod == saphjohans:
+                        if munkalap['B'+sr].value == gyvac:
+                            utrange = utvacsheet[utdijbalfelso: utdijjobbalso]
+                        if munkalap['B'+sr].value == gybere:
+                            utrange = utberesheet[utdijbalfelso: utdijjobbalso]
+
+                        for i in utrange:
+                            if type(i[0].value) != NoneType:
+                                szlevhelyseg = str(munkalap['O'+sr].value)
+                                uthelyseg = str(i[1].value)
+                                if szlevhelyseg.upper() == uthelyseg.upper():
+                                    munkalap['AG'+sr].value = i[9].value
+                                    logfile.info(
+                                        "ÖML - HU - ZF47 JOHANS (rövid) útdíj: %s", str(munkalap['AG'+sr].value))
+                                    break
+                            else:
+                                break
+
+                        munkalap["AE" + str(
+                            sr)].value = munkalap["AH" + sr].value - munkalap["AG" + sr].value
+                    # **** JOHANS hosszúkód VÉGE
 
                     # Kemencepor
                     termek = munkalap['G'+sr].value
@@ -284,13 +309,15 @@ def excelfajl_modositas(inifajl, logfile):
                                     # oszlopok száma nullával kezdődik, így a táblában lévő
                                     # sorszámból egyet le kell vonni
                                     #munkalap['AG'+sr].value = j[67].value
-                                    munkalap['AG'+sr].value = j[int(skoml_utdij1x)].value
+                                    munkalap['AG' +
+                                             sr].value = j[int(skoml_utdij1x)].value
                                     logfile.info(
                                         "ÖML - HU - ZF49 1x útdíj: %s", str(munkalap['AG'+sr].value))
                                     break
                                 else:
                                     #munkalap['AG'+sr].value = j[66].value
-                                    munkalap['AG'+sr].value = j[int(skoml_utdij2x)].value
+                                    munkalap['AG' +
+                                             sr].value = j[int(skoml_utdij2x)].value
                                     logfile.info(
                                         "ÖML - HU - ZF49 2x útdíj: %s", str(munkalap['AG'+sr].value))
                                     break
@@ -333,7 +360,8 @@ def excelfajl_modositas(inifajl, logfile):
                                     break
                                 else:
                                     #munkalap['AG' + sr].value = j[21].value
-                                    munkalap['AG' + sr].value = j[int(skpal_utdij12x)].value
+                                    munkalap['AG' +
+                                             sr].value = j[int(skpal_utdij12x)].value
                                     logfile.info(
                                         "PAL - HU - ZF49 1,2x útdíj: %s", str(munkalap['AG'+sr].value))
                                     break
@@ -347,6 +375,12 @@ def excelfajl_modositas(inifajl, logfile):
 
             # EXW
             elif munkalap['E' + sr].value == 'EXW':
+                munkalap["AE" + sr].value = 0  # nettó fuvardíj
+                munkalap["AG" + sr].value = 0  # útdíj
+                munkalap["AH" + sr].value = 0  # fuvar- + útdíj
+            # FCA incoterms esetén átírás EXW-re
+            elif munkalap['E' + sr].value == 'FCA':
+                munkalap['E' + sr].value = 'EXW'
                 munkalap["AE" + sr].value = 0  # nettó fuvardíj
                 munkalap["AG" + sr].value = 0  # útdíj
                 munkalap["AH" + sr].value = 0  # fuvar- + útdíj

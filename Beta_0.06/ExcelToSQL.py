@@ -28,8 +28,9 @@ def foprogram():
         akt_konyvtar = dirkez.aktualismappa()
         ini_fajlneve = "\\DDCSzlev_v2.ini"
         inifajl = str(akt_konyvtar) + ini_fajlneve
+        
         # INI fájl létrehozása a futási könyvtárban
-        makecfg.make_config_file(inifajl)
+        #makecfg.make_config_file(inifajl)
 
     except FileNotFoundError:
         logfile.error("Az INI fájl nem található: %s", str(inifajl))

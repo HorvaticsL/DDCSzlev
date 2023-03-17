@@ -94,7 +94,8 @@ def make_config_file(inifile):
 
     cfgfile['SAPkodok'] = {
         '; SAP kódok a kivételekhez': '',
-        'Fuvaros-JOHANS': '1851683',
+        'Fuvaros-rJOHANS': '1851683',
+        'Fuvaros-hJOHANS': '1832590287',
         'Fuvaros-SpeedLine': '139666',
         'Fuvaros-Nordsped': '1850020',
         'Fuvaros-Petranyi': '196864',

@@ -296,6 +296,32 @@ Módosításra kerültek az alábbi fájlok (az új INI fájlkezeléshez):
             a fuvarozók száma 
     db_SAPCikkek.py - SAP cikkek betöltése az adatbázisba
     db_SAPSzlev.py - SAP szállítólevelek betöltése az adatbázisba
+----- ***** -----
+2022.09.21
+verzió: beta_0.06
+Az adatbázisba betöltés hibás volt a "FuvardijNetto" mező tartalmát rossz oszlopból töltötte be a program.
+----- ***** -----
+2023.01.10
+verzió: beta_0.06
+INI fájl generátort kikapcsoltam, mivel minden futtatásnál felülírta a változtatott értékeket az eredeti
+paraméterekre. Meg kell írni hozzá a FORM-ot ahol ezt a felhasználó tudja kezelni, addig marad a "kézi" módszer.
+
+2023.03.17
+verzió: beta_0.06
+A JOHANS (hosszúkód) is lettek belföldi projekt árai, Beremendről és Vácról
+Ezért módosítani kellett az ártáblákat.
+Mivel egyes helységek (mindkét gyárnál) projektárasak lettek, ezért itt is vannak 1 Ft-os útdíjak.
+Emiatt változtatni kell a programot:
+    INI fájlban (és a generate_config fájlban is) módosítani kellett:
+        rövidkódos johans változó rjohans változóvá változott
+        a hosszúkódos johans új változót kapott hjohans néven
+    az Excel fájl feldolgozó programban (excel_feldogozasa.py) 
+        az eredeti sapjohans változóhoz tartozó 
+        program részeket átkellett javítani a sapjohans változóhoz
+        az eredeti 
+        a hjohans változónak saphjohans részt is létre kellett hozni, a saprjohans
+        kódok másolásával, mivel a folyamat ugyanaz, csak a fuvarozó kód, amit figyel, azt változik.
+
 
 
 
