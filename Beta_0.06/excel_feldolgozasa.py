@@ -9,7 +9,7 @@ Excel fájl nevét
 
 Visszaadási érték: saveas_szlevfajl - útvonallal együtt
 
-Utolsó módosítás dátuma: 2023.03.17
+Utolsó módosítás dátuma: 2023.03.20
 verzió: 04
 
 """
@@ -96,22 +96,26 @@ def excelfajl_modositas(inifajl, logfile):
     sappetranyi = config['SAPkodok']['fuvaros-petranyi']
     # ***** INI fájladatok beolvasása VÉGE
 
+    logfile.info('Excelfájl (szállítólevelek): %s', str(excelfile))
     szlevfajl = str(excelmappa) + str(excelfile)
     # print(szlevfajl)
-    logfile.info('Excelfájl (szállítólevelek): %s', str(excelfile))
 
+    logfile.info('Excelfájl (helységnevek)')
     helysegfajl = str(helysegmappa) + str(helysegfile)
     # print(helysegfajl)
     logfile.info('Excelfájl (helységnevek): %s', str(helysegfajl))
 
+    logfile.info('Excelfájl (útdíjadatok)')
     utdijfajl = str(utdijmappa) + str(utdijfile)
     # print(utdijfajl)
-    logfile.info('Excelfájl (útdíjadatok): %s', str(utdijfajl))
+    logfile.info('Excelfájl (útdíjadatok)')
 
+    logfile.info('Excelfájl (SK-ÖML ártábla)')
     skoml_artabla = str(artabla_mappa) + str(skoml_utdijfile)
     # print(skoml_artabla)
     logfile.info('Excelfájl (SK-ÖML ártábla): %s', str(skoml_artabla))
 
+    logfile.info('Excelfájl (SK-PAL ártábla)')
     skpal_artabla = str(artabla_mappa) + str(skpal_utdijfile)
     # print(skpal_artabla)
     logfile.info('Excelfájl (SK-PAL ártábla): %s', str(skpal_artabla))
@@ -171,7 +175,7 @@ def excelfajl_modositas(inifajl, logfile):
 
         # Fejléc beállítása az adatbázis mezőnekvekhez igazítva
         fejlecnevek(munkalap)
-        logfile.info("Fejlec megnevezés átírása")
+        logfile.info("Fejléc (1:1 sor) megnevezés átírása")
 
         # **** Excel tábla fejléc VÉGE
 
@@ -236,7 +240,7 @@ def excelfajl_modositas(inifajl, logfile):
                                 if szlevhelyseg.upper() == uthelyseg.upper():
                                     munkalap['AG'+sr].value = i[9].value
                                     logfile.info(
-                                        "ÖML - HU - ZF47 JOHANS (rövid) útdíj: %s", str(munkalap['AG'+sr].value))
+                                        "ÖML - HU - ZF49 JOHANS (rövidkód) útdíj: %s", str(munkalap['AG'+sr].value))
                                     break
                             else:
                                 break
@@ -258,9 +262,9 @@ def excelfajl_modositas(inifajl, logfile):
                                 szlevhelyseg = str(munkalap['O'+sr].value)
                                 uthelyseg = str(i[1].value)
                                 if szlevhelyseg.upper() == uthelyseg.upper():
-                                    munkalap['AG'+sr].value = i[9].value
+                                    munkalap['AG'+sr].value = int(i[9].value) * 2
                                     logfile.info(
-                                        "ÖML - HU - ZF47 JOHANS (rövid) útdíj: %s", str(munkalap['AG'+sr].value))
+                                        "ÖML - HU - ZF49 JOHANS (hosszúkód) útdíj: %s", str(munkalap['AG'+sr].value))
                                     break
                             else:
                                 break
@@ -282,7 +286,7 @@ def excelfajl_modositas(inifajl, logfile):
                                 szlevhelyseg = str(munkalap['O'+sr].value)
                                 uthelyseg = str(i[1].value)
                                 if szlevhelyseg.upper() == uthelyseg.upper():
-                                    munkalap['AG'+sr].value = i[9].value * 2
+                                    munkalap['AG'+sr].value = int(i[9].value) * 2
                                     logfile.info(
                                         "ÖML - HU - ZF47 KEMENCEPOR útdíj: %s", str(munkalap['AG'+sr].value))
                                     break
@@ -438,8 +442,8 @@ def excelfajl_modositas(inifajl, logfile):
                     break
             # **** termékfajta (cement, kó, kemencepor, stb.) beállítása
 
-        # **** Ciklus a soronkénti végig olvasáshoz, íráshoz
-
+        # **** Ciklus a soronkénti végig olvasáshoz, íráshoz VÉGE
+        
         # Excel fájlok bezárása
         wbook.save(saveas_szlevfajl)
         wbook.close()

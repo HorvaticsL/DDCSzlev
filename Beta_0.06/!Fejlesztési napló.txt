@@ -322,6 +322,14 @@ Emiatt változtatni kell a programot:
         a hjohans változónak saphjohans részt is létre kellett hozni, a saprjohans
         kódok másolásával, mivel a folyamat ugyanaz, csak a fuvarozó kód, amit figyel, azt változik.
 
+2023.03.20
+verzió: beta_0.06
+A JOHANS (hosszúkód) miatt a tesztadatok alapján módosítani kellett a forrást:
+    Az útdíjat a 2-szeres szorzó miatt be kellett állítani
+    Javítottam a logfileba kerülő szöveget
+A fájlnyitás ellenőrzésnél (Excel fájlok) nem volt egyértelmű, hogy melyik fájlt nem tudta megnyitni a program,
+ezért itt is módosítani kellett a beírt szöveg sorrendjét és szövegét.
+
 
 
 
